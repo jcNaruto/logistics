@@ -11,4 +11,6 @@ public interface IUserService {
 
     public User login(User user);
 
+    public void levelUpInitUser(int userId);
+
 }

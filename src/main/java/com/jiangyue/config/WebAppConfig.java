@@ -1,5 +1,6 @@
 package com.jiangyue.config;
 
+import com.jiangyue.interceptor.JwtInterceptor;
 import com.jiangyue.interceptor.SessionInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -15,6 +16,8 @@ public class WebAppConfig implements WebMvcConfigurer {
 
     @Autowired
     private SessionInterceptor sessionInterceptor;
+    @Autowired
+    private JwtInterceptor jwtInterceptor;
 
     /**
      * 注册 拦截器
@@ -22,7 +25,7 @@ public class WebAppConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         // 设置拦截的路径、不拦截的路径、优先级等等
-        InterceptorRegistration addInterceptor = registry.addInterceptor(sessionInterceptor);
+        InterceptorRegistration addInterceptor = registry.addInterceptor(jwtInterceptor);
         addInterceptor.addPathPatterns("/**")
                 .excludePathPatterns("/**/login")
                 .excludePathPatterns("/**/registory");

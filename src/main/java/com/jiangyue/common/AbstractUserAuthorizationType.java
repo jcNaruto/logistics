@@ -13,5 +13,7 @@ public abstract class AbstractUserAuthorizationType {
 
     public static final String USER_AUTHORIZATION_KEY = "user_claims";//普通用户对应的key
     public static final String ADMIN_AUTHORIZATION_KEY = "admin_claims";//admin用户对应的key
+    public static final String COMMON_AUTHORIZATION_KEY = "common_claims";//普通用户和admin用户共同的key
+    public static final String INIT_AUTHORIZATION_KEY = "init_claims";//初始化user
 
 }

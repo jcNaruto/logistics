@@ -1,14 +1,17 @@
 package com.jiangyue.controller;
 
+import com.jiangyue.common.AbstractUserAuthorizationType;
 import com.jiangyue.common.Result;
 import com.jiangyue.common.StatusCode;
 import com.jiangyue.entity.WareHouse;
 import com.jiangyue.service.IUserService;
 import com.jiangyue.service.IWareHouseService;
+import com.jiangyue.util.UserAuthorizationUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -25,21 +28,36 @@ public class WareHouseController {
 
     @GetMapping("/")
     @ResponseBody
-    public Result findAll(){
+    public Result findAll(HttpServletRequest request){
+        int statusCode = UserAuthorizationUtil.userAuthorization(request, AbstractUserAuthorizationType.COMMON_AUTHORIZATION_KEY);
+        if(statusCode != StatusCode.OK){
+            return new Result(false, statusCode,"访问出错");
+        }
+
         List<WareHouse> wareHouses = wareHouseService.findAll();
         return new Result(true, StatusCode.OK,"物流信息查询成功", wareHouses);
     }
 
     @DeleteMapping("/{warehouseId}")
     @ResponseBody
-    public Result deleteWareHouse(@PathVariable int warehouseId){
+    public Result deleteWareHouse(@PathVariable int warehouseId, HttpServletRequest request){
+        int statusCode = UserAuthorizationUtil.userAuthorization(request, AbstractUserAuthorizationType.ADMIN_AUTHORIZATION_KEY);
+        if(statusCode != StatusCode.OK){
+            return new Result(false, statusCode,"访问出错");
+        }
+
         String wareHouseName = wareHouseService.deleteWareHouse(warehouseId);
         return new Result(true, StatusCode.OK,wareHouseName+"仓库删除成功");
     }
 
     @PutMapping("/update/ordercount/{warehouseId}")
     @ResponseBody
-    public Result userOrder(@PathVariable Integer warehouseId){
+    public Result userOrder(@PathVariable Integer warehouseId, HttpServletRequest request){
+        int statusCode = UserAuthorizationUtil.userAuthorization(request, AbstractUserAuthorizationType.USER_AUTHORIZATION_KEY);
+        if(statusCode != StatusCode.OK){
+            return new Result(false, statusCode,"访问出错");
+        }
+
         if(warehouseId == null){
             return new Result(false, StatusCode.ERROR, "warehouseId为空");
         }
@@ -49,7 +67,11 @@ public class WareHouseController {
 
     @PostMapping("/{wareHouseName}")
     @ResponseBody
-    public Result userOrder(@PathVariable String wareHouseName){
+    public Result userOrder(@PathVariable String wareHouseName, HttpServletRequest request){
+        int statusCode = UserAuthorizationUtil.userAuthorization(request, AbstractUserAuthorizationType.ADMIN_AUTHORIZATION_KEY);
+        if(statusCode != StatusCode.OK){
+            return new Result(false, statusCode,"访问出错");
+        }
         if(StringUtils.isBlank(wareHouseName)){
             return new Result(false, StatusCode.ERROR, "仓库名称为空");
         }
@@ -59,7 +81,12 @@ public class WareHouseController {
 
     @PutMapping("/update/warehousecount/{warehouseId}")
     @ResponseBody
-    public Result wareHouseOut(@PathVariable Integer warehouseId){
+    public Result wareHouseOut(@PathVariable Integer warehouseId, HttpServletRequest request){
+        int statusCode = UserAuthorizationUtil.userAuthorization(request, AbstractUserAuthorizationType.USER_AUTHORIZATION_KEY);
+        if(statusCode != StatusCode.OK){
+            return new Result(false, statusCode,"访问出错");
+        }
+
         if(warehouseId == null){
             return new Result(false, StatusCode.ERROR, "warehouseId为空");
         }
@@ -69,7 +96,12 @@ public class WareHouseController {
 
     @PutMapping("/update/collectcount/{warehouseId}")
     @ResponseBody
-    public Result collectCount(@PathVariable Integer warehouseId){
+    public Result collectCount(@PathVariable Integer warehouseId, HttpServletRequest request){
+        int statusCode = UserAuthorizationUtil.userAuthorization(request, AbstractUserAuthorizationType.USER_AUTHORIZATION_KEY);
+        if(statusCode != StatusCode.OK){
+            return new Result(false, statusCode,"访问出错");
+        }
+
         if(warehouseId == null){
             return new Result(false, StatusCode.ERROR, "warehouseId为空");
         }
@@ -79,7 +111,12 @@ public class WareHouseController {
 
     @PutMapping("/update/usercount/{warehouseId}")
     @ResponseBody
-    public Result userRecieve(@PathVariable Integer warehouseId){
+    public Result userRecieve(@PathVariable Integer warehouseId, HttpServletRequest request){
+        int statusCode = UserAuthorizationUtil.userAuthorization(request, AbstractUserAuthorizationType.USER_AUTHORIZATION_KEY);
+        if(statusCode != StatusCode.OK){
+            return new Result(false, statusCode,"访问出错");
+        }
+
         if(warehouseId == null){
             return new Result(false, StatusCode.ERROR, "warehouseId为空");
         }
