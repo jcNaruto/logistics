@@ -18,4 +18,6 @@ public class User implements Serializable {
     @Column
     private Integer Role;
 
+
+
 }

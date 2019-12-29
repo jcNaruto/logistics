@@ -16,6 +16,7 @@ import javax.servlet.http.HttpSession;
 /**
  * create by jiacheng on 2019/12/19
  */
+@CrossOrigin
 @RestController
 @RequestMapping("/user")
 public class UserController {

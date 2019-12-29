@@ -34,7 +34,6 @@ public class UserServiceImpl implements IUserService {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         user.setRole(UserRoleEnum.INIT_USER_ROLE.getSeq());
         User save = userRepository.save(user);
-
     }
 
     @Override

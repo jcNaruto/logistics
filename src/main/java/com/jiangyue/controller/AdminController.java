@@ -8,6 +8,7 @@ import com.jiangyue.dto.UserTO;
 import com.jiangyue.entity.User;
 import com.jiangyue.service.IUserService;
 import com.jiangyue.util.JwtUtil;
+import com.jiangyue.util.TransformResultCodeUtil;
 import com.jiangyue.util.UserAuthorizationUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import javax.servlet.http.HttpSession;
 /**
  * create by jiacheng on 2019/12/19
  */
+@CrossOrigin
 @RestController
 @RequestMapping("/admin")
 public class AdminController {
@@ -32,7 +34,7 @@ public class AdminController {
     public Result regitory(@PathVariable int userId, HttpServletRequest request){
         int statusCode = UserAuthorizationUtil.userAuthorization(request, AbstractUserAuthorizationType.ADMIN_AUTHORIZATION_KEY);
         if(statusCode != StatusCode.OK){
-            return new Result(false, statusCode,"访问出错");
+            return TransformResultCodeUtil.trans(statusCode);
         }
 
         userService.levelUpInitUser(userId);

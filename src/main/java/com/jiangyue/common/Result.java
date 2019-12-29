@@ -13,6 +13,11 @@ public class Result {
     private Object data;// 返回数据
     private Integer code;
 
+    public Result(Boolean flag, Integer code) {
+        this.flag = flag;
+        this.code = code;
+    }
+
     public Result(Boolean flag, Integer code, String message) {
         this.flag = flag;
         this.code = code;
