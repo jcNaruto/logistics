@@ -3,6 +3,7 @@ package com.jiangyue.entity;
 import lombok.Data;
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 
 @Data
 @Entity(name = "user")
@@ -16,7 +17,13 @@ public class User implements Serializable {
     @Column
     private String password;
     @Column
-    private Integer Role;
+    private Integer role;
+    @Column
+    private Date createTime;
+    @Column
+    private Date updateTime;
+    @Column
+    private String comment;
 
 
 

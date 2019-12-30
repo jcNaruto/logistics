@@ -26,8 +26,6 @@ import javax.servlet.http.HttpSession;
 public class AdminController {
     @Autowired
     private IUserService userService;
-    @Autowired
-    private JwtUtil jwtUtil;
 
     @PutMapping("/inituser/{userId}")
     @ResponseBody
@@ -41,16 +39,16 @@ public class AdminController {
         return new Result(true, StatusCode.OK, "授权成功");
     }
 
-    @PostMapping("/login")
+    @GetMapping("/")
     @ResponseBody
-    public Result login(@RequestBody User user, HttpSession session){
-        if(StringUtils.isBlank(user.getUserName()) || StringUtils.isBlank(user.getPassword())){
-            return new Result(false, StatusCode.ERROR,"用户名或密码为空");
+    public Result getAll(HttpServletRequest request){
+        int statusCode = UserAuthorizationUtil.userAuthorization(request, AbstractUserAuthorizationType.ADMIN_AUTHORIZATION_KEY);
+        if(statusCode != StatusCode.OK){
+            return TransformResultCodeUtil.trans(statusCode);
         }
-        User loginUser = userService.login(user);
-        //session.setAttribute(UserAuth.USER_AUTH, loginUser);
-        String jwt = jwtUtil.createJWT(loginUser.getUserId(), loginUser.getUserName(), UserRoleEnum.getValue(loginUser.getRole()));
-        return new Result(true, StatusCode.OK,"登陆成功", new UserTO(jwt, loginUser.getUserName()));
+        return new Result(true, StatusCode.OK, "查询成功", userService.getAllList());
     }
+
+
 
 }

@@ -6,10 +6,13 @@ import com.jiangyue.entity.User;
 import com.jiangyue.exception.LogisticsException;
 import com.jiangyue.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 /**
@@ -33,6 +36,8 @@ public class UserServiceImpl implements IUserService {
         //强hash加密
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         user.setRole(UserRoleEnum.INIT_USER_ROLE.getSeq());
+        user.setCreateTime(new Date());
+        user.setUpdateTime(user.getCreateTime());
         User save = userRepository.save(user);
     }
 
@@ -55,6 +60,13 @@ public class UserServiceImpl implements IUserService {
         user.setRole(UserRoleEnum.USER_ROLE.getSeq());
 
         userRepository.save(user);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<User> getAllList() {
+        Sort sort = Sort.by(Sort.Direction.DESC, "role");
+        return userRepository.findAll(sort);
     }
 
     /**

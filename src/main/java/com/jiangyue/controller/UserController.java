@@ -28,11 +28,11 @@ public class UserController {
     @PostMapping("/registory")
     @ResponseBody
     public Result regitory(@RequestBody User user){
-        if(StringUtils.isBlank(user.getUserName()) || StringUtils.isBlank(user.getPassword())){
+        if(StringUtils.isBlank(user.getUserName()) || StringUtils.isBlank(user.getPassword()) || StringUtils.isBlank(user.getComment()) ){
             return new Result(false, StatusCode.ERROR,"用户名或密码为空");
         }
         userService.registory(user);
-        return new Result(true, StatusCode.OK,"注册成功");
+        return new Result(true, StatusCode.OK,"注册成功，请登陆");
     }
 
     @PostMapping("/login")
